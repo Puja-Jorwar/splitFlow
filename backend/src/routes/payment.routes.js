@@ -5,7 +5,7 @@ const {
   getPaymentById,
   getPaymentSummary,
   deletePayment,
-} = require("../controllers/payment.controller");
+} = require("../controllers/Payment.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 
 const router = express.Router();
