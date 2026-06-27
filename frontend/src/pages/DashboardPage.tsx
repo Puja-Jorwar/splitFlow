@@ -81,6 +81,16 @@ export default function DashboardPage() {
     });
   };
 
+  // Listen to query parameters to open add-expense dialog
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get("add-expense") === "true") {
+      setOpenExpenseDialog(true);
+      // Clean up the URL query param so it doesn't reopen on subsequent refreshes
+      navigate(window.location.pathname, { replace: true });
+    }
+  }, [navigate]);
+
   // Load data from API on component mount
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -518,6 +528,7 @@ export default function DashboardPage() {
           </CardContent>
           <CardFooter className="pt-2">
             <Button
+              onClick={() => navigate("/dashboard/payments")}
               className="w-full bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold rounded-xl py-2.5 transition-transform hover:scale-[1.01]"
               variant="default"
               disabled={expenses.length === 0}

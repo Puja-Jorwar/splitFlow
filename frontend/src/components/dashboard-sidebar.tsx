@@ -1,6 +1,4 @@
-"use client";
-
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   CreditCard,
   Home,
@@ -18,6 +16,8 @@ import { Logo } from "@/components/logo";
 
 export function DashboardSidebar() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
 
   return (
     <div className="border-r border-white/5 bg-[#070b19] h-full flex flex-col text-slate-300">
@@ -127,7 +127,11 @@ export function DashboardSidebar() {
         </nav>
       </div>
       <div className="border-t border-white/5 p-4">
-        <Button className="w-full bg-primary hover:bg-primary/95 text-white font-bold rounded-xl py-2.5 shadow-lg shadow-primary/20" size="sm">
+        <Button
+          onClick={() => navigate("/dashboard?add-expense=true")}
+          className="w-full bg-primary hover:bg-primary/95 text-white font-bold rounded-xl py-2.5 shadow-lg shadow-primary/20"
+          size="sm"
+        >
           <Plus className="mr-2 h-4 w-4" />
           Add Expense
         </Button>
