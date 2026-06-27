@@ -6,255 +6,171 @@ import {
   Users,
   CreditCard,
   Activity,
+  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center">
+    <div className="flex min-h-screen flex-col bg-[#070b19] text-slate-100 relative overflow-hidden select-none">
+      {/* Background Decorative Blur Gradients */}
+      <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] h-[500px] w-[500px] bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
+
+      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#070b19]/80 backdrop-blur-md">
+        <div className="container flex h-16 items-center px-4 md:px-6">
           <Link to="/" className="flex items-center gap-2">
             <Logo size="md" />
           </Link>
-          <nav className="ml-auto flex gap-4 sm:gap-6">
-            <a href="#features" className="text-sm font-medium hover:underline">
+          <nav className="ml-auto hidden md:flex gap-8">
+            <a href="#features" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
               Features
             </a>
-            <a href="#how-it-works" className="text-sm font-medium hover:underline">
+            <a href="#how-it-works" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
               How It Works
-            </a>
-            <a href="#pricing" className="text-sm font-medium hover:underline">
-              Pricing
             </a>
           </nav>
           <div className="ml-auto flex items-center gap-4">
             <Link to="/auth/login">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-white/5">
                 Log in
               </Button>
             </Link>
             <Link to="/auth/signup">
-              <Button size="sm">Sign up</Button>
+              <Button size="sm" className="bg-primary hover:bg-primary/95 text-white shadow-lg shadow-primary/20">
+                Sign up
+              </Button>
             </Link>
           </div>
         </div>
       </header>
+
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+        <section className="w-full py-16 md:py-28 lg:py-36 xl:py-48 flex items-center justify-center">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Split Expenses{" "}
+            <div className="grid gap-12 lg:grid-cols-[1fr_450px] lg:gap-16 items-center">
+              <div className="flex flex-col justify-center space-y-6">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 w-fit text-xs font-semibold">
+                  <Zap className="h-3 w-3 fill-indigo-400" /> Introducing SplitFlow 2.0
+                </div>
+                <div className="space-y-4">
+                  <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl text-white leading-tight">
+                    Split Expenses <br />
                     <span className="splitflow-gradient-text">
                       Effortlessly
                     </span>{" "}
                     with Friends
                   </h1>
-                  <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                    SplitFlow helps you track shared expenses, maintain
-                    real-time balances, and settle up easily with friends and
-                    roommates.
+                  <p className="max-w-[600px] text-slate-400 text-base md:text-lg">
+                    Ditch the awkward calculations. Track shared expenses, maintain
+                    real-time balances, and settle up instantly with friends, roommates, and travel buddies.
                   </p>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <div className="flex flex-col gap-3 sm:flex-row">
                   <Link to="/auth/signup">
-                    <Button size="lg">
+                    <Button size="lg" className="bg-primary hover:bg-primary/95 text-white shadow-xl shadow-primary/30 w-full sm:w-auto">
                       Get Started
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
-                  <a href="#how-it-works">
-                    <Button size="lg" variant="outline">
-                      Learn More
+                  <a href="#features">
+                    <Button size="lg" variant="outline" className="border-white/10 hover:bg-white/5 text-slate-300 w-full sm:w-auto">
+                      Explore Features
                     </Button>
                   </a>
                 </div>
               </div>
+
+              {/* Showcase Card */}
               <div className="flex items-center justify-center">
-                <div className="rounded-xl border bg-background p-8 shadow-lg">
-                  <div className="flex justify-between mb-6">
-                    <h3 className="text-xl font-bold">Trip to Barcelona</h3>
-                    <span className="text-green-600 font-semibold">
+                <div className="w-full max-w-[450px] rounded-3xl glass-panel p-8 shadow-2xl relative overflow-hidden border border-white/10">
+                  <div className="absolute top-0 right-0 h-32 w-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+                  <div className="flex justify-between items-center mb-8">
+                    <div>
+                      <span className="text-xs text-indigo-400 uppercase tracking-widest font-semibold">Active Trip</span>
+                      <h3 className="text-2xl font-bold text-white mt-1">Trip to Barcelona</h3>
+                    </div>
+                    <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-sm font-bold">
                       €1,240.50
-                    </span>
+                    </div>
                   </div>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between py-2 border-b">
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-                          <span className="font-semibold text-purple-600">
-                            AJ
-                          </span>
+                    {[
+                      { name: "Alex Jones", initials: "AJ", color: "bg-purple-500/20 text-purple-400", status: "owes €145.75", statusColor: "text-rose-400" },
+                      { name: "Sarah Miller", initials: "SM", color: "bg-blue-500/20 text-blue-400", status: "gets back €212.25", statusColor: "text-emerald-400" },
+                      { name: "Tom Knight", initials: "TK", color: "bg-emerald-500/20 text-emerald-400", status: "owes €66.50", statusColor: "text-rose-400" },
+                    ].map((member, i) => (
+                      <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/5">
+                        <div className="flex items-center">
+                          <div className={`w-9 h-9 rounded-full flex items-center justify-center mr-3 font-bold text-sm ${member.color}`}>
+                            {member.initials}
+                          </div>
+                          <span className="font-medium text-sm text-slate-200">{member.name}</span>
                         </div>
-                        <span>Alex Jones</span>
+                        <div className={`text-sm font-semibold ${member.statusColor}`}>{member.status}</div>
                       </div>
-                      <div className="text-red-500">owes €145.75</div>
-                    </div>
-                    <div className="flex items-center justify-between py-2 border-b">
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                          <span className="font-semibold text-blue-600">
-                            SM
-                          </span>
-                        </div>
-                        <span>Sarah Miller</span>
-                      </div>
-                      <div className="text-green-500">gets back €212.25</div>
-                    </div>
-                    <div className="flex items-center justify-between py-2">
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center mr-3">
-                          <span className="font-semibold text-teal-600">
-                            TK
-                          </span>
-                        </div>
-                        <span>Tom Knight</span>
-                      </div>
-                      <div className="text-red-500">owes €66.50</div>
-                    </div>
+                    ))}
                   </div>
-                  <Button className="w-full mt-6">Settle Up</Button>
+                  <Button className="w-full mt-8 bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold py-3 rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">
+                    Settle Up
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
+        {/* Features Section */}
         <section
           id="features"
-          className="w-full py-12 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900"
+          className="w-full py-20 md:py-32 bg-[#0c1125] border-t border-b border-white/5 relative"
         >
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Key Features
-                </h2>
-                <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  SplitFlow makes expense sharing easy with powerful features
-                  designed for friends, roommates, and groups.
-                </p>
-              </div>
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
+              <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl text-white">
+                Everything you need to Split
+              </h2>
+              <p className="max-w-[700px] text-slate-400 text-base md:text-lg">
+                SplitFlow makes tracking and settling shared debts frictionless, so you can spend less time math-ing.
+              </p>
             </div>
-            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
-              <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
-                <Receipt className="h-12 w-12 text-emerald-500" />
-                <h3 className="text-xl font-bold">Expense Tracking</h3>
-                <p className="text-center text-gray-500 dark:text-gray-400">
-                  Log expenses with details like amount, category, and
-                  participants.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
-                <Users className="h-12 w-12 text-violet-500" />
-                <h3 className="text-xl font-bold">Smart Splitting</h3>
-                <p className="text-center text-gray-500 dark:text-gray-400">
-                  Split costs equally, by percentage, or specific amounts.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
-                <Activity className="h-12 w-12 text-amber-500" />
-                <h3 className="text-xl font-bold">Real-time Dashboard</h3>
-                <p className="text-center text-gray-500 dark:text-gray-400">
-                  See who owes whom at a glance with real-time balance updates.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
-                <CreditCard className="h-12 w-12 text-sky-500" />
-                <h3 className="text-xl font-bold">Payment Integration</h3>
-                <p className="text-center text-gray-500 dark:text-gray-400">
-                  Connect with UPI and PayPal for direct settlements.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-900">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 text-pink-500"
-                  >
-                    <path d="M16 16v-3a2 2 0 0 0-2-2H3a2 2 0 0 0-2 2v3"></path>
-                    <path d="M8.5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
-                    <path d="M16 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
-                    <path d="M16 8V5c0-1.1-.9-2-2-2H8v5h8Z"></path>
-                    <path d="M22 13h-2l-1.5-6h5.5l-2 6Z"></path>
-                  </svg>
+            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-4 md:grid-cols-2 lg:grid-cols-3">
+              {[
+                { icon: <Receipt className="h-6 w-6 text-emerald-400" />, title: "Expense Tracking", desc: "Easily log expenses with custom descriptions, amount, category, and date." },
+                { icon: <Users className="h-6 w-6 text-indigo-400" />, title: "Smart Splitting", desc: "Split costs equally or divide by percentages and custom share amounts." },
+                { icon: <Activity className="h-6 w-6 text-pink-400" />, title: "Real-time Dashboard", desc: "See your dynamic balances, debts, and credits update instantly across all groups." },
+                { icon: <CreditCard className="h-6 w-6 text-sky-400" />, title: "Fast Settlements", desc: "Integrate custom options to record settlements and keep history balanced." },
+                { icon: <Zap className="h-6 w-6 text-amber-400" />, title: "Receipt Scanning", desc: "Instantly scan paper receipts to extract line items and split quickly." },
+                { icon: <Users className="h-6 w-6 text-purple-400" />, title: "Multi-group Support", desc: "Organize spending by rooms, trips, outings, or custom shared spaces." },
+              ].map((feature, i) => (
+                <div key={i} className="flex flex-col items-start p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all duration-300">
+                  <div className="p-3 rounded-xl bg-white/5 mb-4 border border-white/5">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">{feature.desc}</p>
                 </div>
-                <h3 className="text-xl font-bold">Notifications</h3>
-                <p className="text-center text-gray-500 dark:text-gray-400">
-                  Get reminders for pending payments and expense updates.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-cyan-100 dark:bg-cyan-900">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 text-cyan-500"
-                  >
-                    <rect
-                      width="18"
-                      height="18"
-                      x="3"
-                      y="4"
-                      rx="2"
-                      ry="2"
-                    ></rect>
-                    <line x1="16" x2="16" y1="2" y2="6"></line>
-                    <line x1="8" x2="8" y1="2" y2="6"></line>
-                    <line x1="3" x2="21" y1="10" y2="10"></line>
-                    <path d="M8 14h.01"></path>
-                    <path d="M12 14h.01"></path>
-                    <path d="M16 14h.01"></path>
-                    <path d="M8 18h.01"></path>
-                    <path d="M12 18h.01"></path>
-                    <path d="M16 18h.01"></path>
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold">Activity History</h3>
-                <p className="text-center text-gray-500 dark:text-gray-400">
-                  Track all transactions and settlements over time.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
       </main>
-      <footer className="w-full border-t py-6">
-        <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
+
+      <footer className="w-full border-t border-white/5 py-8 bg-[#070b19] z-10 relative">
+        <div className="container px-4 md:px-6 flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <Wallet className="h-6 w-6" />
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              © 2024 SplitFlow. All rights reserved.
+            <Wallet className="h-5 w-5 text-indigo-400" />
+            <p className="text-sm text-slate-400">
+              © 2026 SplitFlow. Built for beautiful pair-programming experiences.
             </p>
           </div>
-          <nav className="flex gap-4 sm:gap-6">
-            <a className="text-sm font-medium hover:underline" href="#">
-              Terms of Service
+          <nav className="flex gap-6">
+            <a className="text-sm font-medium text-slate-400 hover:text-white transition-colors" href="#">
+              Terms
             </a>
-            <a className="text-sm font-medium hover:underline" href="#">
+            <a className="text-sm font-medium text-slate-400 hover:text-white transition-colors" href="#">
               Privacy
-            </a>
-            <a className="text-sm font-medium hover:underline" href="#">
-              Contact
             </a>
           </nav>
         </div>

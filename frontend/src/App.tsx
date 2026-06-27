@@ -11,6 +11,7 @@ import PaymentsPage from "@/pages/PaymentsPage";
 import ReceiptScannerPage from "@/pages/ReceiptScannerPage";
 import ReportsPage from "@/pages/ReportsPage";
 import SettingsPage from "@/pages/SettingsPage";
+import AnalyticsPage from "@/pages/AnalyticsPage";
 import { Toaster } from "@/components/ui/toaster";
 import "@/globals.css";
 
@@ -29,7 +30,9 @@ function App() {
           <Route path="groups" element={<GroupsPage />} />
           <Route path="groups/:id" element={<GroupDetailPage />} />
           <Route path="expenses" element={<ExpensesPage />} />
+          <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="payments" element={<PaymentsPage />} />
+
           <Route path="receipt-scanner" element={<ReceiptScannerPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="settings" element={<SettingsPage />} />

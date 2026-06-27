@@ -1,5 +1,5 @@
 import type React from "react";
-import { ArrowRight, DollarSign, Plus, UserRound, Wallet } from "lucide-react";
+import { ArrowRight, DollarSign, Plus, UserRound, Wallet, ArrowUpRight, ArrowDownRight, Compass } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -292,58 +292,66 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-10">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+        <div>
+          <h1 className="text-3xl font-extrabold tracking-tight text-white">Dashboard</h1>
+          <p className="text-sm text-slate-400 mt-1">
+            Welcome back{currentUser ? `, ${currentUser.name}` : ""}! View your current balance and settlements.
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           <Dialog open={openGroupDialog} onOpenChange={setOpenGroupDialog}>
             <DialogTrigger asChild>
-              <Button variant="outline">
+              <Button variant="outline" className="bg-slate-950/40 border-white/5 backdrop-blur-md rounded-xl hover:bg-white/5 text-slate-300">
                 <Plus className="mr-2 h-4 w-4" />
                 Add Group
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] bg-slate-900 border-white/10 text-white rounded-3xl">
               <DialogHeader>
-                <DialogTitle>Create New Group</DialogTitle>
-                <DialogDescription>
+                <DialogTitle className="text-white">Create New Group</DialogTitle>
+                <DialogDescription className="text-slate-400">
                   Create a new group to track shared expenses
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleCreateGroup} className="space-y-4 pt-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Group Name</Label>
+                  <Label htmlFor="name" className="text-slate-300">Group Name</Label>
                   <Input
                     id="name"
                     placeholder="e.g., Roommates, Trip to Paris, etc."
                     value={newGroup.name}
                     onChange={handleInputChange}
                     required
+                    className="bg-slate-950/40 border-white/5 text-white rounded-xl"
                   />
                 </div>
 
                 <div className="grid gap-2">
-                  <Label htmlFor="description">Description (Optional)</Label>
+                  <Label htmlFor="description" className="text-slate-300">Description (Optional)</Label>
                   <Textarea
                     id="description"
                     placeholder="What is this group for?"
                     value={newGroup.description}
                     onChange={handleInputChange}
+                    className="bg-slate-950/40 border-white/5 text-white rounded-xl min-h-[80px]"
                   />
                 </div>
 
                 <div className="grid gap-2">
-                  <Label htmlFor="members">Add Members (Optional)</Label>
+                  <Label htmlFor="members" className="text-slate-300">Add Members (Optional)</Label>
                   <Input
                     id="members"
                     placeholder="Enter email addresses, separated by commas"
                     value={newGroup.members}
                     onChange={handleInputChange}
+                    className="bg-slate-950/40 border-white/5 text-white rounded-xl"
                   />
                 </div>
 
-                <DialogFooter>
-                  <Button type="submit">Create Group</Button>
+                <DialogFooter className="pt-4">
+                  <Button type="submit" className="bg-primary hover:bg-primary/95 rounded-xl font-bold w-full sm:w-auto">Create Group</Button>
                 </DialogFooter>
               </form>
             </DialogContent>
@@ -351,15 +359,15 @@ export default function DashboardPage() {
 
           <Dialog open={openExpenseDialog} onOpenChange={setOpenExpenseDialog}>
             <DialogTrigger asChild>
-              <Button variant="default">
+              <Button variant="default" className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 rounded-xl font-bold">
                 <Plus className="mr-2 h-4 w-4" />
                 Add Expense
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] bg-slate-900 border-white/10 text-white rounded-3xl">
               <DialogHeader>
-                <DialogTitle>Add New Expense</DialogTitle>
-                <DialogDescription>
+                <DialogTitle className="text-white">Add New Expense</DialogTitle>
+                <DialogDescription className="text-slate-400">
                   Enter the details for your new expense
                 </DialogDescription>
               </DialogHeader>
@@ -368,72 +376,103 @@ export default function DashboardPage() {
           </Dialog>
         </div>
       </div>
+
+      {/* Grid of Metric Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className={`glass-panel border-white/5 shadow-lg relative overflow-hidden transition-all duration-300 hover:scale-[1.02] ${totalBalance >= 0 ? "glow-success" : "glow-danger"}`}>
+          <div className={`absolute top-0 right-0 h-20 w-20 rounded-full blur-2xl pointer-events-none ${totalBalance >= 0 ? "bg-emerald-500/10" : "bg-rose-500/10"}`} />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Balance</CardTitle>
+            <DollarSign className={`h-4.5 w-4.5 ${totalBalance >= 0 ? "text-emerald-400" : "text-rose-400"}`} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalBalance.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground">Current balance</p>
+            <div className="text-3xl font-extrabold tracking-tight text-white mt-1">
+              ${totalBalance.toFixed(2)}
+            </div>
+            <p className="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
+              {totalBalance >= 0 ? (
+                <>
+                  <ArrowUpRight className="h-3 w-3 text-emerald-400" />
+                  <span className="text-emerald-400 font-semibold">Net credit</span> position
+                </>
+              ) : (
+                <>
+                  <ArrowDownRight className="h-3 w-3 text-rose-400" />
+                  <span className="text-rose-400 font-semibold">Net debt</span> position
+                </>
+              )}
+            </p>
           </CardContent>
         </Card>
-        <Card>
+
+        <Card className="glass-panel border-white/5 shadow-lg relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-emerald-500/20">
+          <div className="absolute top-0 right-0 h-20 w-20 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">You Are Owed</CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">You Are Owed</CardTitle>
+            <Wallet className="h-4.5 w-4.5 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${youAreOwed.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-3xl font-extrabold tracking-tight text-white mt-1">
+              ${youAreOwed.toFixed(2)}
+            </div>
+            <p className="text-xs text-slate-400 mt-1.5">
               {expenses.filter((e) => e.type === "you_paid").length > 0
-                ? `From ${expenses.filter((e) => e.type === "you_paid").length} expenses`
-                : "No outstanding payments"}
+                ? `From ${expenses.filter((e) => e.type === "you_paid").length} shared items`
+                : "No outstanding balances"}
             </p>
           </CardContent>
         </Card>
-        <Card>
+
+        <Card className="glass-panel border-white/5 shadow-lg relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-rose-500/20">
+          <div className="absolute top-0 right-0 h-20 w-20 bg-rose-500/5 rounded-full blur-2xl pointer-events-none" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">You Owe</CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">You Owe</CardTitle>
+            <Wallet className="h-4.5 w-4.5 text-rose-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${youOwe.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-3xl font-extrabold tracking-tight text-white mt-1">
+              ${youOwe.toFixed(2)}
+            </div>
+            <p className="text-xs text-slate-400 mt-1.5">
               {expenses.filter((e) => e.type === "you_owe").length > 0
-                ? `From ${expenses.filter((e) => e.type === "you_owe").length} expenses`
-                : "No outstanding debts"}
+                ? `From ${expenses.filter((e) => e.type === "you_owe").length} shared items`
+                : "No pending debts"}
             </p>
           </CardContent>
         </Card>
-        <Card>
+
+        <Card className="glass-panel border-white/5 shadow-lg relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500/20">
+          <div className="absolute top-0 right-0 h-20 w-20 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Groups</CardTitle>
-            <UserRound className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Groups</CardTitle>
+            <UserRound className="h-4.5 w-4.5 text-indigo-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{activeGroups}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-3xl font-extrabold tracking-tight text-white mt-1">
+              {activeGroups}
+            </div>
+            <p className="text-xs text-slate-400 mt-1.5">
               {activeGroups > 0
-                ? `${groups.length} total groups`
-                : "No groups created yet"}
+                ? `${groups.length} total shared circles`
+                : "Create a group to start splitting"}
             </p>
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:grid-cols-7">
-        <Card className="md:col-span-4">
+
+      <div className="grid gap-6 md:grid-cols-7">
+        <Card className="md:col-span-4 glass-panel border-white/5 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 h-32 w-32 bg-slate-100/5 rounded-full blur-2xl pointer-events-none" />
           <CardHeader className="flex flex-row items-center">
-            <div className="grid gap-2">
-              <CardTitle>Recent Expenses</CardTitle>
-              <CardDescription>
-                Your recent expenses across all groups
+            <div className="grid gap-1">
+              <CardTitle className="text-white font-bold">Recent Expenses</CardTitle>
+              <CardDescription className="text-slate-400 text-xs">
+                Your recent expense events across all groups
               </CardDescription>
             </div>
             <Link
               to="/dashboard/expenses"
-              className="ml-auto flex items-center gap-1 text-sm font-medium"
+              className="ml-auto flex items-center gap-1 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
             >
               View All
               <ArrowRight className="h-4 w-4" />
@@ -443,12 +482,13 @@ export default function DashboardPage() {
             {expenses.length > 0 ? (
               <ExpensesList expenses={expenses.slice(0, 5)} />
             ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <p className="text-sm text-muted-foreground">
-                  No expenses yet. Add your first expense to get started.
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <Compass className="h-10 w-10 text-slate-500 mb-3" />
+                <p className="text-sm text-slate-400">
+                  No expenses recorded yet. Let's log your first item!
                 </p>
                 <Button
-                  className="mt-4"
+                  className="mt-5 bg-primary hover:bg-primary/95 text-white font-bold rounded-xl shadow-lg shadow-primary/20"
                   onClick={() => setOpenExpenseDialog(true)}
                 >
                   <Plus className="mr-2 h-4 w-4" />
@@ -458,26 +498,28 @@ export default function DashboardPage() {
             )}
           </CardContent>
         </Card>
-        <Card className="md:col-span-3">
+
+        <Card className="md:col-span-3 glass-panel border-white/5 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 h-32 w-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
           <CardHeader>
-            <CardTitle>Balance Summary</CardTitle>
-            <CardDescription>Your current balance with friends</CardDescription>
+            <CardTitle className="text-white font-bold">Balance Summary</CardTitle>
+            <CardDescription className="text-slate-400 text-xs">Your current balances by participant</CardDescription>
           </CardHeader>
           <CardContent>
             {expenses.length > 0 ? (
               <BalanceSummary expenses={expenses} />
             ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <p className="text-sm text-muted-foreground">
-                  No balances to display yet.
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <p className="text-sm text-slate-400">
+                  No balances to compute yet.
                 </p>
               </div>
             )}
           </CardContent>
-          <CardFooter>
+          <CardFooter className="pt-2">
             <Button
-              className="w-full"
-              variant="outline"
+              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold rounded-xl py-2.5 transition-transform hover:scale-[1.01]"
+              variant="default"
               disabled={expenses.length === 0}
             >
               Settle Up
@@ -485,22 +527,24 @@ export default function DashboardPage() {
           </CardFooter>
         </Card>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="lg:col-span-4">
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="lg:col-span-4 glass-panel border-white/5 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 h-32 w-32 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
           <CardHeader>
-            <CardTitle>Your Groups</CardTitle>
-            <CardDescription>Groups you participate in</CardDescription>
+            <CardTitle className="text-white font-bold">Your Groups</CardTitle>
+            <CardDescription className="text-slate-400 text-xs">Shared groups you participate in</CardDescription>
           </CardHeader>
           <CardContent>
             {groups.length > 0 ? (
               <GroupsList groups={groups.slice(0, 4)} />
             ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <p className="text-sm text-muted-foreground">
-                  No groups yet. Create your first group to get started.
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <p className="text-sm text-slate-400">
+                  You are not in any groups yet. Let's create a circle!
                 </p>
                 <Button
-                  className="mt-4"
+                  className="mt-5 bg-primary hover:bg-primary/95 text-white font-bold rounded-xl shadow-lg shadow-primary/20"
                   onClick={() => setOpenGroupDialog(true)}
                 >
                   <Plus className="mr-2 h-4 w-4" />
@@ -509,30 +553,32 @@ export default function DashboardPage() {
               </div>
             )}
           </CardContent>
-          <CardFooter>
+          <CardFooter className="pt-2">
             <Button
               asChild
               variant="ghost"
-              className="w-full"
+              className="w-full text-indigo-400 hover:text-indigo-300 hover:bg-white/5 rounded-xl font-bold py-2"
               disabled={groups.length === 0}
             >
               <Link to="/dashboard/groups">View All Groups</Link>
             </Button>
           </CardFooter>
         </Card>
-        <Card className="lg:col-span-3">
+
+        <Card className="lg:col-span-3 glass-panel border-white/5 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 h-32 w-32 bg-pink-500/5 rounded-full blur-2xl pointer-events-none" />
           <CardHeader>
-            <CardTitle>Monthly Spending</CardTitle>
-            <CardDescription>Your expense trends</CardDescription>
+            <CardTitle className="text-white font-bold">Monthly Spending</CardTitle>
+            <CardDescription className="text-slate-400 text-xs">Your top category breakdown</CardDescription>
           </CardHeader>
           <CardContent>
             {categoryData.length > 0 ? (
               <div className="space-y-4">
                 {categoryData.slice(0, 5).map((category) => (
-                  <div key={category.name} className="space-y-2">
-                    <div className="flex items-center">
-                      <div className="text-sm font-medium">{category.name}</div>
-                      <div className="ml-auto text-sm">
+                  <div key={category.name} className="space-y-1.5">
+                    <div className="flex items-center text-sm font-semibold text-slate-200">
+                      <div>{category.name}</div>
+                      <div className="ml-auto">
                         ${category.amount.toFixed(2)}
                       </div>
                     </div>
@@ -543,24 +589,25 @@ export default function DashboardPage() {
                           Math.max(...categoryData.map((c) => c.amount))) *
                           100,
                       )}
-                      className="h-2"
+                      className="h-2 rounded-full bg-slate-950/50"
+                      indicatorClassName="bg-gradient-to-r from-indigo-500 to-pink-500"
                     />
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <p className="text-sm text-muted-foreground">
-                  No spending data to display yet.
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <p className="text-sm text-slate-400">
+                  No spending recorded this month.
                 </p>
               </div>
             )}
           </CardContent>
-          <CardFooter>
+          <CardFooter className="pt-2">
             <Button
               asChild
               variant="ghost"
-              className="w-full"
+              className="w-full text-indigo-400 hover:text-indigo-300 hover:bg-white/5 rounded-xl font-bold py-2"
               disabled={expenses.length === 0}
             >
               <Link to="/dashboard/analytics">View Detailed Analysis</Link>

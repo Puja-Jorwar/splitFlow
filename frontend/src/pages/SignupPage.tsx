@@ -1,7 +1,7 @@
 import type React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, ArrowLeft, User, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,134 +35,164 @@ export default function SignupPage() {
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
     } catch (err: any) {
-      setError(err.message || "Failed to register account");
+      setError(err.message || "Failed to register account. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="w-full max-w-md space-y-8 px-4">
-        <div className="flex flex-col items-center space-y-2 text-center">
+    <div className="flex min-h-screen bg-[#070b19] text-slate-100 relative items-center justify-center overflow-hidden px-4 select-none">
+      {/* Decorative Blurs */}
+      <div className="absolute top-[-20%] left-[-20%] h-[600px] w-[600px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-20%] h-[600px] w-[600px] bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Back button */}
+      <Link to="/" className="absolute top-6 left-6 text-slate-400 hover:text-white flex items-center gap-1.5 text-sm font-medium transition-colors">
+        <ArrowLeft className="h-4 w-4" />
+        Back to Home
+      </Link>
+
+      <div className="w-full max-w-md space-y-6 z-10 py-10">
+        <div className="flex flex-col items-center space-y-3 text-center">
           <Link to="/" className="flex items-center justify-center">
-            <Logo size="md" />
+            <Logo size="lg" />
           </Link>
-          <h1 className="text-2xl font-bold">Create an account</h1>
-          <p className="text-sm text-muted-foreground">
-            Enter your information to create an account
+          <h1 className="text-3xl font-extrabold tracking-tight text-white mt-4">Create an account</h1>
+          <p className="text-sm text-slate-400">
+            Sign up to track and divide shared bills with ease
           </p>
         </div>
-        <div className="grid gap-6">
-          <form onSubmit={handleSignup}>
-            <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="first-name">First name</Label>
+
+        <div className="rounded-3xl glass-panel p-8 shadow-2xl border border-white/10 relative overflow-hidden">
+          <form onSubmit={handleSignup} className="space-y-4">
+            {error && (
+              <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm">
+                <ShieldAlert className="h-5 w-5 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold">Registration failed</p>
+                  <p className="text-xs text-rose-400/90 mt-0.5">{error}</p>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="first-name" className="text-slate-300 font-medium text-xs">First Name</Label>
+                <div className="relative">
                   <Input
                     id="first-name"
                     placeholder="John"
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    className="pl-9 bg-slate-950/40 border-white/5 focus:border-primary/50 text-white rounded-xl h-10 text-sm"
                   />
+                  <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="last-name">Last name</Label>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="last-name" className="text-slate-300 font-medium text-xs">Last Name</Label>
+                <div className="relative">
                   <Input
                     id="last-name"
                     placeholder="Doe"
                     required
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    className="pl-9 bg-slate-950/40 border-white/5 focus:border-primary/50 text-white rounded-xl h-10 text-sm"
                   />
+                  <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                 </div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-slate-300 font-medium text-xs">Email Address</Label>
+              <div className="relative">
                 <Input
                   id="email"
-                  placeholder="m@example.com"
+                  placeholder="name@example.com"
                   required
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className="pl-9 bg-slate-950/40 border-white/5 focus:border-primary/50 text-white rounded-xl h-10 text-sm"
                 />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    required
-                    type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2"
-                    onClick={() => setShowPassword(!showPassword)}
-                    type="button"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                    <span className="sr-only">
-                      {showPassword ? "Hide password" : "Show password"}
-                    </span>
-                  </Button>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" required />
-                <Label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  I agree to the{" "}
-                  <Link to="#" className="text-primary underline">
-                    terms of service
-                  </Link>{" "}
-                  and{" "}
-                  <Link to="#" className="text-primary underline">
-                    privacy policy
-                  </Link>
-                </Label>
-              </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Creating account..." : "Create account"}
-              </Button>
-              {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
             </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-slate-300 font-medium text-xs">Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  required
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pl-9 pr-9 bg-slate-950/40 border-white/5 focus:border-primary/50 text-white rounded-xl h-10 text-sm"
+                />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <button
+                  onClick={() => setShowPassword(!showPassword)}
+                  type="button"
+                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-200 transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2 pt-2">
+              <Checkbox id="terms" required className="border-white/20 data-[state=checked]:bg-primary rounded" />
+              <Label
+                htmlFor="terms"
+                className="text-xs text-slate-400 leading-normal"
+              >
+                I agree to the{" "}
+                <Link to="#" className="text-indigo-400 hover:underline">
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link to="#" className="text-indigo-400 hover:underline">
+                  Privacy Policy
+                </Link>
+              </Label>
+            </div>
+
+            <Button type="submit" className="w-full bg-primary hover:bg-primary/95 text-white font-bold h-11 rounded-xl shadow-lg shadow-primary/20 transition-transform active:scale-[0.99] mt-4" disabled={loading}>
+              {loading ? "Creating Account..." : "Create Account"}
+            </Button>
           </form>
-          <div className="relative">
+
+          <div className="relative my-5">
             <div className="absolute inset-0 flex items-center">
-              <Separator className="w-full" />
+              <Separator className="w-full border-white/5" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
+              <span className="bg-[#0f142b] px-3 text-slate-400">
+                Or sign up with
               </span>
             </div>
           </div>
+
           <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline">
-              Google
-            </Button>
-            <Button variant="outline">
-              Apple
-            </Button>
+            <Button variant="outline" className="border-white/5 hover:bg-white/5 text-slate-300 rounded-xl h-10 text-xs">Google</Button>
+            <Button variant="outline" className="border-white/5 hover:bg-white/5 text-slate-300 rounded-xl h-10 text-xs">Apple</Button>
           </div>
-          <div className="text-center text-sm">
+
+          <div className="text-center text-sm text-slate-400 mt-6">
             Already have an account?{" "}
             <Link
               to="/auth/login"
-              className="underline underline-offset-4 hover:text-primary"
+              className="text-indigo-400 hover:text-indigo-300 font-semibold underline underline-offset-4"
             >
               Sign in
             </Link>
