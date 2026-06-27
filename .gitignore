@@ -15,3 +15,11 @@ pnpm-debug.log*
 
 # OS
 .DS_Store
+
+# backup
+frontend-next/
+
+# local logs
+*.log
+backend/backend-dev.*
+frontend/frontend-dev.*

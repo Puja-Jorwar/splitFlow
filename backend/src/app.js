@@ -1,12 +1,12 @@
-console.log("🔥 SERVER RUNNING ON 5050 🔥");
-
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth.routes");
-const groupRoutes = require("./routes/group.routes"); // 👈 MUST EXIST
+const groupRoutes = require("./routes/group.routes");
+const expenseRoutes = require("./routes/expense.routes");
+const paymentRoutes = require("./routes/payment.routes");
 
 dotenv.config();
 connectDB();
@@ -16,15 +16,29 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ROUTES — MUST BE BEFORE app.listen
+// Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/groups", groupRoutes); // 👈 THIS LINE IS CRITICAL
+app.use("/api/groups", groupRoutes);
+app.use("/api/expenses", expenseRoutes);
+app.use("/api/payments", paymentRoutes);
 
+// Health check
 app.get("/", (req, res) => {
-  res.send("API running");
+  res.json({ status: "SplitFlow API running 🚀" });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({ message: "Internal server error" });
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🔥 SplitFlow server running on port ${PORT}`);
 });
