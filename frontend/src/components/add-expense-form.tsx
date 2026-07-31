@@ -110,169 +110,189 @@ export function AddExpenseForm({
   const uniqueGroups = Array.from(new Set(groups.map((g) => g.name)));
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-      <div className="grid gap-2">
-        <Label htmlFor="description">Description</Label>
-        <Input
-          id="description"
-          placeholder="Dinner, Groceries, etc."
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="grid gap-2">
-        <Label htmlFor="amount">Amount</Label>
-        <div className="relative">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-            $
-          </span>
+    <form onSubmit={handleSubmit} className="space-y-4 pt-3">
+      {/* Description & Amount Grid */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="grid gap-1.5 col-span-2">
+          <Label htmlFor="description" className="text-slate-300 text-xs font-semibold">Description</Label>
           <Input
-            id="amount"
-            type="number"
-            step="0.01"
-            min="0"
-            className="pl-7"
-            placeholder="0.00"
-            value={formData.amount}
+            id="description"
+            placeholder="Dinner, Groceries, etc."
+            value={formData.description}
             onChange={handleChange}
             required
+            className="bg-slate-950/40 border-white/5 text-white rounded-xl h-10"
           />
+        </div>
+
+        <div className="grid gap-1.5 col-span-1">
+          <Label htmlFor="amount" className="text-slate-300 text-xs font-semibold">Amount</Label>
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 text-sm">
+              $
+            </span>
+            <Input
+              id="amount"
+              type="number"
+              step="0.01"
+              min="0"
+              className="pl-7 bg-slate-950/40 border-white/5 text-white rounded-xl h-10"
+              placeholder="0.00"
+              value={formData.amount}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
       </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="date">Date</Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-full justify-start text-left font-normal",
-                !date && "text-muted-foreground",
+      {/* Group & Category Grid */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="grid gap-1.5">
+          <Label htmlFor="group" className="text-slate-300 text-xs font-semibold">Group</Label>
+          <Select
+            value={formData.group}
+            onValueChange={(value) => handleSelectChange("group", value)}
+          >
+            <SelectTrigger id="group" className="bg-slate-950/40 border-white/5 text-white rounded-xl h-10">
+              <SelectValue placeholder="Select a group" />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-900 border-white/10 text-white rounded-xl">
+              {uniqueGroups.length > 0 ? (
+                uniqueGroups.map((groupName) => (
+                  <SelectItem key={groupName} value={groupName} className="hover:bg-white/5 focus:bg-white/5">
+                    {groupName}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem value="default" disabled>Create a group first</SelectItem>
               )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="group">Group</Label>
-        <Select
-          value={formData.group}
-          onValueChange={(value) => handleSelectChange("group", value)}
-        >
-          <SelectTrigger id="group">
-            <SelectValue placeholder="Select a group" />
-          </SelectTrigger>
-          <SelectContent>
-            {uniqueGroups.length > 0 ? (
-              uniqueGroups.map((groupName) => (
-                <SelectItem key={groupName} value={groupName}>
-                  {groupName}
+        <div className="grid gap-1.5">
+          <Label htmlFor="category" className="text-slate-300 text-xs font-semibold">Category</Label>
+          <Select
+            value={formData.category}
+            onValueChange={(value) => handleSelectChange("category", value)}
+          >
+            <SelectTrigger id="category" className="bg-slate-950/40 border-white/5 text-white rounded-xl h-10">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-900 border-white/10 text-white rounded-xl">
+              {EXPENSE_CATEGORIES.map((category) => (
+                <SelectItem key={category} value={category} className="hover:bg-white/5 focus:bg-white/5">
+                  {category}
                 </SelectItem>
-              ))
-            ) : (
-              <SelectItem value="default">Create a group first</SelectItem>
-            )}
-          </SelectContent>
-        </Select>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="category">Category</Label>
-        <Select
-          value={formData.category}
-          onValueChange={(value) => handleSelectChange("category", value)}
-        >
-          <SelectTrigger id="category">
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            {EXPENSE_CATEGORIES.map((category) => (
-              <SelectItem key={category} value={category}>
-                {category}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      {/* Date & Paid By Grid */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="grid gap-1.5">
+          <Label htmlFor="date" className="text-slate-300 text-xs font-semibold">Date</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal bg-slate-950/40 border-white/5 text-white rounded-xl h-10 hover:bg-white/5 hover:text-white",
+                  !date && "text-muted-foreground",
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                {date ? format(date, "PPP") : <span>Pick a date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-slate-900 border-white/10 rounded-xl">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                initialFocus
+                className="bg-slate-900 text-white border-none rounded-xl"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="grid gap-1.5">
+          <Label className="text-slate-300 text-xs font-semibold">Paid by</Label>
+          <RadioGroup
+            value={formData.paidBy}
+            onValueChange={(value) => handleSelectChange("paidBy", value)}
+            className="flex flex-row gap-4 h-10 items-center"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="you" id="you" className="border-slate-500 text-primary" />
+              <Label htmlFor="you" className="text-slate-300 text-sm font-normal cursor-pointer">You</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="other" id="other" className="border-slate-500 text-primary" />
+              <Label htmlFor="other" className="text-slate-300 text-sm font-normal cursor-pointer">Someone else</Label>
+            </div>
+          </RadioGroup>
+        </div>
       </div>
 
-      <div className="grid gap-2">
-        <Label>Paid by</Label>
-        <RadioGroup
-          value={formData.paidBy}
-          onValueChange={(value) => handleSelectChange("paidBy", value)}
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="you" id="you" />
-            <Label htmlFor="you">You</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="other" id="other" />
-            <Label htmlFor="other">Someone else</Label>
-          </div>
-        </RadioGroup>
-      </div>
-
+      {/* Conditional Paid By Person Input */}
       {formData.paidBy === "other" && (
-        <div className="grid gap-2">
-          <Label htmlFor="paidByPerson">Who paid?</Label>
+        <div className="grid gap-1.5">
+          <Label htmlFor="paidByPerson" className="text-slate-300 text-xs font-semibold">Who paid?</Label>
           <Input
             id="paidByPerson"
-            placeholder="Enter name"
+            placeholder="Enter member's name"
             value={formData.paidByPerson}
             onChange={handleChange}
             required={formData.paidBy === "other"}
+            className="bg-slate-950/40 border-white/5 text-white rounded-xl h-10"
           />
         </div>
       )}
 
-      <div className="grid gap-2">
-        <Label>Split Method</Label>
+      {/* Split Method */}
+      <div className="grid gap-1.5">
+        <Label className="text-slate-300 text-xs font-semibold">Split Method</Label>
         <RadioGroup
           value={formData.splitMethod}
           onValueChange={(value) => handleSelectChange("splitMethod", value)}
+          className="flex flex-row gap-4 h-10 items-center"
         >
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="equal" id="equal" />
-            <Label htmlFor="equal">Equal</Label>
+            <RadioGroupItem value="equal" id="equal" className="border-slate-500 text-primary" />
+            <Label htmlFor="equal" className="text-slate-300 text-sm font-normal cursor-pointer">Equal</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="unequal" id="unequal" />
-            <Label htmlFor="unequal">Unequal</Label>
+            <RadioGroupItem value="unequal" id="unequal" className="border-slate-500 text-primary" />
+            <Label htmlFor="unequal" className="text-slate-300 text-sm font-normal cursor-pointer">Unequal</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="percentage" id="percentage" />
-            <Label htmlFor="percentage">By percentage</Label>
+            <RadioGroupItem value="percentage" id="percentage" className="border-slate-500 text-primary" />
+            <Label htmlFor="percentage" className="text-slate-300 text-sm font-normal cursor-pointer">Percentage</Label>
           </div>
         </RadioGroup>
       </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="notes">Notes (Optional)</Label>
+      {/* Notes (Optional) */}
+      <div className="grid gap-1.5">
+        <Label htmlFor="notes" className="text-slate-300 text-xs font-semibold">Notes (Optional)</Label>
         <Textarea
           id="notes"
           placeholder="Add any additional details..."
           value={formData.notes}
           onChange={handleChange}
+          className="bg-slate-950/40 border-white/5 text-white rounded-xl min-h-[60px] max-h-[100px] resize-none"
         />
       </div>
 
-      <DialogFooter>
-        <Button type="submit">Create Expense</Button>
+      <DialogFooter className="pt-2">
+        <Button type="submit" className="bg-primary hover:bg-primary/95 text-white rounded-xl font-bold w-full h-11">
+          Create Expense
+        </Button>
       </DialogFooter>
     </form>
   );
